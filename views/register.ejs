@@ -1,0 +1,99 @@
+<%- include('partials/header'); %>
+
+<body>
+
+  <section class="vh-100" style="background-color: #eee;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                  <form id="register_form" action="" method="POST">
+                    <!-- UserName input -->
+                    <div class="form-outline mb-4">
+                      <input name="username" type="text" id="register_username" class="form-control" required />
+                      <label class="form-label" for="register_username">User Name</label>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                      <input name="email" type="email" id="register_email" class="form-control" required />
+                      <label class="form-label" for="register_email">Email address</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                      <input id="register_password" name="password" type="password" class="form-control" required />
+                      <label class="form-label" for="register_password">Password</label>
+                    </div>
+                    <!-- Password repeat -->
+                    <div class="form-outline mb-4">
+                      <input id="register_password_repeat" name="password_repeat" type="password" class="form-control" required />
+                      <label class="form-label" for="register_password_repeat">Repeat Password</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+
+                    <!-- Login buttons -->
+                    <div class="text-center">
+                      <p>Already have account? <a href="./">Login</a></p>
+
+                      <%- include('partials/sociallogin'); %>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    $(function() {
+      $("#register_password").on("keyup", function() {
+        this.setCustomValidity("");
+      });
+
+      $("#register_password_repeat").on("keyup", function() {
+        this.setCustomValidity("");
+      });
+
+      $("#register_form").on("submit", function(e) {
+        e.preventDefault();
+
+        const password = $("#register_password");
+        const passwordRepeat = $("#register_password_repeat");
+
+        if (password.val() !== passwordRepeat.val()) {
+          $("#register_password_repeat")[0].setCustomValidity('password not match');
+          $("#register_password_repeat")[0].reportValidity();
+          return false;
+        }
+
+        if (!checkPasswordvalidity(password))
+          return false;
+
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: "./register",
+          data: {
+            username: $("#register_username").val(),
+            email: $("#register_email").val(),
+            password: password.val(),
+          },
+        }).done(function(data) {
+            showMessage(data.message);
+        });
+        
+        return false;
+      });
+    });
+  </script>
+</body>
+<%- include('partials/footer'); %>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aha Exam</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  <!-- Navigation: Start -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="color: white;">
+    <div class="container row">
+      <!-- <div class="row"> -->
+      <div class="col-2">
+        <% if (user) { %>
+        <a class="navbar-brand" href="./">Aha Exam Welcome! <%= user.name %></a>
+        <% } else  { %>
+        <a class="navbar-brand" href="./">Aha Exam</a>
+        <% } %>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="col-8">
+
+      </div>
+
+      <% if (user) { %>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= user.name %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" id = "dropdown_email"><%= user.email %></a>
+            <a class="dropdown-item" href="./changeusername">Change User Name</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:;" id="btn_logout">Logout</a>
+          </div>
+        </li>
+      </ul>
+      <% } %>
+    </div>
+  </nav>
+  <!-- Navigation: End -->
+
+  <%- include('../modal/messagemodal'); %>
+
+  <script>
+    function handleLogout(){
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "./logout",       
+      }).done(function(data) {
+        if(data.succeed)
+          window.location.href = "./";
+        else{
+          showMessage(data.message); 
+        }   
+      });
+    }
+
+    function showMessage(msg) {
+      $("#messageModal_text").text(msg);
+      $("#messageModal").modal('show');
+
+      $("#messageModal_btn_close").on("click", function() {
+        $("#messageModal_btn_resendemail").hide();   
+        $("#messageModal").modal('hide');
+      });
+    }
+
+    function checkPasswordvalidity(passwordDom) {
+      // contains at least 8 characters
+      if (passwordDom.val().length < 8) {
+        passwordDom[0].setCustomValidity('password should contains at least 8 characters');
+        passwordDom[0].reportValidity();
+        return false;
+      }
+
+      // contains at least one lower character
+      if (passwordDom.val().search(/[a-z]/) < 0) {
+        passwordDom[0].setCustomValidity('password should contains at least one lower character');
+        passwordDom[0].reportValidity();
+        return false;
+      }
+
+      // contains at least one upper character
+      if (passwordDom.val().search(/[A-Z]/) < 0) {
+        passwordDom[0].setCustomValidity('password should contains at least one upper character');
+        passwordDom[0].reportValidity();
+        return false;
+      }
+
+      // contains at least one digit character
+      if (passwordDom.val().search(/[0-9]/) < 0) {
+        passwordDom[0].setCustomValidity('password should contains at least one digit character');
+        passwordDom[0].reportValidity();
+        return false;
+      }
+
+      // contains at least one special character
+      if (passwordDom.val().search(/[!@#$%^&*]/) < 0) {
+        passwordDom[0].setCustomValidity('password should contains at least one special character');
+        passwordDom[0].reportValidity();
+        return false;
+      }
+
+      return true;
+    }
+
+    function resendEmail() {
+      let email = localStorage.getItem("email");
+      if (!email)
+        return;
+
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "./resendemail",
+        data: {
+          email: email
+        },
+      }).done(function(data) {
+        alert(data.message);
+      });
+    }
+
+    $(function() {
+      let email =  $("#dropdown_email").text();     
+      if(email)
+        localStorage.setItem("email", email);
+
+      let error_message = "<%= error_message %>";
+      if (error_message)
+        showMessage(error_message);
+
+      $("#btn_logout").on("click", ()=>{
+        handleLogout();
+      });
+    });
+  </script>
+
+
+
+</head>
