@@ -1,0 +1,22 @@
+<h2> verifying your account... please wait...</h2>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script>
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const token = urlParams.get('token');
+
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: "./verify",
+    data: {
+      token: token,
+    },
+  }).done(function(data) {
+    if (data.succeed)
+      window.location.href = "./";
+    else
+      alert(data.message);
+  });
+</script>

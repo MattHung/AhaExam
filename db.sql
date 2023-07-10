@@ -16,12 +16,10 @@
 
 
 -- Dumping database structure for aha_exam
-DROP DATABASE IF EXISTS `aha_exam`;
 CREATE DATABASE IF NOT EXISTS `aha_exam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `aha_exam`;
 
 -- Dumping structure for table aha_exam.users
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -40,12 +38,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `email` (`email`,`password`),
   KEY `login_count` (`login_count`),
   KEY `updatedAt` (`updatedAt`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
 -- Dumping structure for table aha_exam._exceptions
-DROP TABLE IF EXISTS `_exceptions`;
 CREATE TABLE IF NOT EXISTS `_exceptions` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
@@ -54,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `_exceptions` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 

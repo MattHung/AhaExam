@@ -11,10 +11,7 @@ export class PassportConfig {
         });
 
         passport.deserializeUser(async function (user, done) {
-            // Model.increment(
-            //     { seq: +5 },
-            //     { where: { id: 4 } }
-            //   );
+           
             let res = await User.increment(
                 { login_count: +1 },
 
@@ -23,17 +20,7 @@ export class PassportConfig {
                         id: user.id ,
                     }
                 }
-            );
-              
-            // let res = await User.update(
-            //     { login_count: Sequelize.literal('login_count + 1') },
-
-            //     {
-            //         where: {
-            //             id: user.id ,
-            //         }
-            //     }
-            // );
+            );             
 
             done(null, user);
         });
@@ -86,14 +73,6 @@ export class PassportConfig {
                     if (!user) {
                         return done(null, false);
                     }
-                    bcrypt.compare(password, user.password, function (err, res) {
-                        if (res) {
-                            console.log("successful login");
-                            return done(null, user);
-                        } else {
-                            return done(null, false);
-                        }
-                    });
                 }
             )
         );
