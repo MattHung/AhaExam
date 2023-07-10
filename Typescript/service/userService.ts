@@ -1,6 +1,7 @@
 import * as crypto from 'crypto';
 import * as util from 'util';
 import MailService from '@sendgrid/mail';
+import mailer from 'nodemailer'
 import { User } from '../models/user.js';
 
 enum RegistrationType {
@@ -35,6 +36,43 @@ export class UserService {
      * @return {void} 
      */
     sendVerifyEmail_ = async (targetEmail: string, username: string, token: string): Promise<void> => {
+        let sendEmailViaGoogleSmtp = async (): Promise<void> => {
+            let smtpProtocol = mailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                service: "Gmail",
+                auth: {
+                    user: process.env.GMAIL_APP_USERNAME,
+                    pass: process.env.GMAIL_APP_PASSWORD,
+                }
+            });
+
+            let mailoption = {
+                from: "no-reply@gmail.com",
+                to: targetEmail,
+                subject: "AhaExam please verify your email",
+                html: text
+            }
+
+            //use google smtp for send mail
+            let info = await smtpProtocol.sendMail(mailoption);
+            console.log(info);
+        };
+
+        let sendEmailViaSendGrid = async (): Promise<void> => {
+            MailService.setApiKey(process.env.SENDGRID_API_KEY)
+            const msg = {
+                to: targetEmail, // Change to your recipient
+                from: process.env.SENDGRID_SENDER, // Change to your verified sender
+                subject: "AhaExam please verify your email",
+                html: text,
+            };
+
+            await MailService.send(msg).then(() => {
+                console.log('Email sent');
+            });
+        }
+
         let link = util.format("<a href=\"%s/verify?token=%s\">Verify Email</a>", process.env.EMAIL_VERIFY_HOST, token);
         let text = util.format(
             "<html>" +
@@ -55,17 +93,10 @@ export class UserService {
             "</html>"
             , username, link);
 
-        MailService.setApiKey(process.env.SENDGRID_API_KEY)
-        const msg = {
-            to: targetEmail, // Change to your recipient
-            from: process.env.SENDGRID_SENDER, // Change to your verified sender
-            subject: "AhaExam please verify your email",
-            html: text,
-        };
 
-        await MailService.send(msg).then(() => {
-            console.log('Email sent');
-        });
+
+        await sendEmailViaGoogleSmtp();
+        // await sendEmailViaSendGrid();
     };
 
     /**
