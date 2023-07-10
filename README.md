@@ -1,0 +1,4 @@
+# AhaExam, There are Javascript and Typescript version, about the website usage, please check video below, thanks!
+
+https://github.com/MattHung/AhaExam/assets/4666402/735fe7dc-f011-4f67-92ad-f540eba352e3
+
