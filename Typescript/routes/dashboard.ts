@@ -86,6 +86,7 @@ router.get('/dashboard/user_statistics', async (req, res): Promise<void> => {
     let totalTodayActive:number = await User.count({
         where: {
             updatedAt: { [Op.gt]: new Date().setHours(0, 0, 0, 0) },
+            login_count: { [Op.gt]: 0 },
         },
     });
 
