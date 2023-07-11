@@ -12,10 +12,13 @@ export class DashboardController {
         let limit: number = parseInt(req.query.limit);
         let offset: number = parseInt(req.query.offset);
 
-        if (isNaN(limit))
+        if (isNaN(limit)){
             limit = 0;
-        if (isNaN(offset))
+        }
+
+        if (isNaN(offset)){
             offset = 0;
+        }
 
         let queryRes: User[] = await User.findAll({
             attributes: [

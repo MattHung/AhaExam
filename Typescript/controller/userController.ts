@@ -38,8 +38,9 @@ export class UserController {
 
         if (apiRes.succeed) {
             this.service_.userSessionLogin_(req, apiRes.user, (err) => {
-                if (err)
+                if (err){
                     apiRes = this.service_.getAPIResult(false, err.message);
+                }
 
                 res.json(apiRes);
             });
@@ -63,8 +64,9 @@ export class UserController {
 
         if (apiRes.succeed) {
             this.service_.userSessionLogin_(req, apiRes.user, (err) => {
-                if (err)
+                if (err){
                     apiRes = this.service_.getAPIResult(false, err.message);
+                }
 
                 res.json(apiRes);
             });
@@ -111,8 +113,9 @@ export class UserController {
 
         apiRes = await this.service_.apiChangeUserName(req.user.registration_type, req.body.email, req.body.username);
 
-        if (apiRes.succeed)
+        if (apiRes.succeed){
             req.user.name = req.body.username;
+        }
 
         res.json(apiRes);
     }

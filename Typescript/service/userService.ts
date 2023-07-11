@@ -128,24 +128,29 @@ export class UserService {
      */
     checkPasswordvalidity_(password: string): string {
         // contains at least 8 characters
-        if (password.length < 8)
+        if (password.length < 8){
             return 'password should contains at least 8 characters';
+        }
 
         // contains at least one lower character
-        if (password.search(/[a-z]/) < 0)
+        if (password.search(/[a-z]/) < 0){
             return 'password should contains at least one lower character';
+        }
 
         // contains at least one upper character
-        if (password.search(/[A-Z]/) < 0)
+        if (password.search(/[A-Z]/) < 0){
             return 'password should contains at least one upper character';
+        }
 
         // contains at least one digit character
-        if (password.search(/[0-9]/) < 0)
+        if (password.search(/[0-9]/) < 0){
             return 'password should contains at least one digit character';
+        }
 
         // contains at least one special character
-        if (password.search(/[!@#$%^&*]/) < 0)
+        if (password.search(/[!@#$%^&*]/) < 0){
             return 'password should contains at least one special character';
+        }
 
         return "";
     }
@@ -160,8 +165,9 @@ export class UserService {
     apiLogin = async (email: string, password: string): Promise<ApiResult> => {
         try {
             let invalidPassword = this.checkPasswordvalidity_(password);
-            if (invalidPassword !== "")
+            if (invalidPassword !== ""){
                 return this.getAPIResult(false, invalidPassword);
+            }
 
             password = crypto.createHash('md5').update(password).digest("hex");
             let user = await User.findOne({
@@ -171,8 +177,9 @@ export class UserService {
                 },
             });
 
-            if (!user)
+            if (!user){
                 return this.getAPIResult(false, "login failed, invalid email or password!");
+            }
 
             if (user.verifiedAt == null) {
                 let res = this.getAPIResult(false, 'login failed, please verify your email fist!');
@@ -204,8 +211,9 @@ export class UserService {
                 },
             });
 
-            if (!user)
+            if (!user){
                 return this.getAPIResult(false, "invalid email.");
+            }
 
             await this.sendVerifyEmail_(user.email, user.name, user.verify_token);
 
@@ -225,8 +233,9 @@ export class UserService {
      */
     apiRegister = async (username: string, email: string, password: string): Promise<ApiResult> => {
         let invalidPassword = this.checkPasswordvalidity_(password);
-        if (invalidPassword !== "")
+        if (invalidPassword !== ""){
             return this.getAPIResult(false, invalidPassword);
+        }
 
         let error_message = "";
 
@@ -246,10 +255,11 @@ export class UserService {
 
             await this.apiSendEmailVerify(email);
         } catch (e) {
-            if (e.original.sqlState === '23000')
+            if (e.original.sqlState === '23000'){
                 error_message = "duplicate email, please type a new one";
-            else
+            }else{
                 error_message = e.message;
+            }
 
             return this.getAPIResult(false, error_message);
         }
@@ -273,8 +283,9 @@ export class UserService {
                 },
             });
 
-            if (!user)
+            if (!user){
                 return this.getAPIResult(false, "verify failed, invalid token!");
+            }
 
             if (user.verifiedAt != null) {
                 let res = this.getAPIResult(true, "succeed!");
@@ -336,15 +347,17 @@ export class UserService {
      */
     apiResetPassword = async (email: string, oldPassword: string, newPassword: string): Promise<ApiResult> => {
         let invalidPassword = this.checkPasswordvalidity_(newPassword);
-        if (invalidPassword !== "")
+        if (invalidPassword !== ""){
             return this.getAPIResult(false, invalidPassword);
+        }
 
         try {
             oldPassword = crypto.createHash('md5').update(oldPassword).digest("hex");
             newPassword = crypto.createHash('md5').update(newPassword).digest("hex");
 
-            if(oldPassword === newPassword)
+            if(oldPassword === newPassword){
                 return this.getAPIResult(true, "succeed! please use new password to login");
+            }
 
             let user = await User.findOne({
                 where: {
@@ -353,8 +366,9 @@ export class UserService {
                 },
             });
 
-            if (!user)
+            if (!user){
                 return this.getAPIResult(false, "invalid email");
+            }
 
             let result = await User.update(
                 { password: newPassword },
@@ -368,8 +382,9 @@ export class UserService {
                 }
             );
 
-            if (result[0] === 0)
+            if (result[0] === 0){
                 return this.getAPIResult(false, "old password mismatch, please try again!");
+            }
 
             return this.getAPIResult(true, "succeed! please use new password to login");
         } catch (e) {

@@ -34,10 +34,11 @@ export class ViewController {
         req.session.error_message = null;
         req.session.resend_email = null;
 
-        if (req.user)
+        if (req.user){
             this.renderPage_(req, res, "statistics.ejs");
-        else
+        }else{
             this.renderPage_(req, res, "login.ejs", errMsg, resendEmail);
+        }
     }
 
     //register page view
@@ -72,8 +73,9 @@ export class ViewController {
                 return next(err);
             }
 
-            if (!user)
+            if (!user){
                 return res.redirect(process.env.BASE_URL);
+            }
 
             this.service_.userSessionLogin_(req, user, (err) => {
                 if (err) {
@@ -98,8 +100,9 @@ export class ViewController {
                 return next(err);
             }
 
-            if (!user)
+            if (!user){
                 return res.redirect(process.env.BASE_URL);
+            }
 
             this.service_.userSessionLogin_(req, user, (err) => {
                 if (err) {
