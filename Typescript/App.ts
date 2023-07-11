@@ -25,6 +25,7 @@ process.on('uncaughtException', async (err: Error) => {
     });
 });
 
+//handle rejections
 process.on('unhandledRejection', async (err: Error) => {
     console.error(err);
     await Exception.create({
@@ -38,9 +39,14 @@ const app = express();
 const passportConfig = new PassportConfig();
 const db = new DB();
 
+//listen port
 app.set('port', process.env.PORT);
+
+//front-end views
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+//allow cookie
 app.use(cookieParser());
 app.use(session({
     secret: 'keyboard cat',
@@ -56,6 +62,25 @@ app.use(express.urlencoded({ extended: true }));
 passportConfig.initialization(passport);
 db.initialization();
 
+//record all api errors
+app.use((req, res, next) => {
+    const func_ = res.json;
+    res.json = async(data) => {
+        if(data.succeed == false){
+            await Exception.create({
+                name: 'apiError',
+                message: data.message,
+                stack: (new Error()).stack,
+            });
+        }
+
+        func_.apply(res, [data]);
+    };
+
+    next();
+})
+
+//routers
 app.use(process.env.BASE_URL, viewRouter);
 app.use(process.env.BASE_URL, userRouter);
 app.use(process.env.BASE_URL, dashboardRouter);

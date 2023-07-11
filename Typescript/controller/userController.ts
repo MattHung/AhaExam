@@ -1,5 +1,11 @@
 import { ApiResult, UserService } from '../service/userService'
 
+/*
+ * UserController
+ *
+ * handle all user-related back-end api
+ */
+
 export class UserController {
     service_: UserService;
 

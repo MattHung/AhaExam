@@ -1,6 +1,12 @@
 import passport from 'passport'
 import { UserService } from '../service/userService.js'
 
+/*
+ * ViewController
+ *
+ * handle all view request that render front-end views
+ */
+
 export class ViewController {
     service_: UserService = null;
 
@@ -54,6 +60,7 @@ export class ViewController {
         this.renderPage_(req, res, "changeusername.ejs", null);
     }
 
+    //facebook login request
     getFacebookLogin = (req, res) => {
         passport.authenticate('facebook', { scope: ['public_profile', 'email'] })(req, res);
     };
@@ -79,6 +86,7 @@ export class ViewController {
         })(req, res, next);
     };
 
+    //google login request
     getGoogleLogin = (req, res) => {
         passport.authenticate('google', { scope: ['profile', 'email'] })(req, res);
     };
@@ -103,7 +111,4 @@ export class ViewController {
             });
         })(req, res, next);
     };
-
-
-
 }

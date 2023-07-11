@@ -13,7 +13,6 @@ export class DB {
             dialect: "mysql",
             timezone: "+08:00",
             dialectOptions: {
-                useUTC: false,
                 dateStrings: true,
                 typeCast: true,
                 bigNumberStrings: true,

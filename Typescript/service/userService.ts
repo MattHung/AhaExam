@@ -19,6 +19,11 @@ export interface ApiResult {
     verify_token?: string;
 };
 
+/*
+ * UserService
+ *
+ * user-related back-end api logic
+ */
 export class UserService {
     getAPIResult(succeed: boolean, message: string): ApiResult {
         return <ApiResult>{
@@ -36,6 +41,7 @@ export class UserService {
      * @return {void} 
      */
     sendVerifyEmail_ = async (targetEmail: string, username: string, token: string): Promise<void> => {
+        //use google smtp for send email
         let sendEmailViaGoogleSmtp = async (): Promise<void> => {
             let smtpProtocol = mailer.createTransport({
                 host: "smtp.gmail.com",
@@ -59,6 +65,7 @@ export class UserService {
             console.log(info);
         };
 
+        //use send grid service for send email
         let sendEmailViaSendGrid = async (): Promise<void> => {
             MailService.setApiKey(process.env.SENDGRID_API_KEY)
             const msg = {
