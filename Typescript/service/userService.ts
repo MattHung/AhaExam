@@ -4,6 +4,11 @@ import MailService from '@sendgrid/mail';
 import mailer from 'nodemailer'
 import { User } from '../models/user.js';
 
+
+/*
+ * registration types
+ * @enum {string}
+ */
 enum RegistrationType {
     email = "email",
     facebookl = "facebookl",
