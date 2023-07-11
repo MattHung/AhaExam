@@ -1,54 +1,48 @@
 <%- include('partials/header'); %>
 
 <body>
-
-
-  <section class="vh-100" style="background-color: #eee;">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-12 col-xl-11">
-          <div class="card text-black" style="border-radius: 25px;">
-            <div class="card-body p-md-5">
-              <div class="row justify-content-center">
-                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                  <form id="login_form" action="" method="POST">
-                    <!-- Email input -->
-                    <div class="form-outline mb-4">
-                      <input id="login_email" type="email" name="email" class="form-control" required />
-                      <label class="form-label" for="login_email">Email address</label>
-                    </div>
-
-                    <!-- Password input -->
-                    <div class="form-outline mb-4">
-                      <input id="login_password" name="password" type="password" class="form-control" required />
-                      <label class="form-label" for="login_password">Password</label>
-                    </div>
-
-                    <!-- 2 column grid layout for inline styling -->
-                    <div class="row mb-4">
-                      <div class="col">
-                        <!-- Simple link -->
-                        <a href="./resetpassword">reset password</a>
-                      </div>
-
-                      <!-- Submit button -->
-                      <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-
-                      <!-- Register buttons -->
-                      <div class="text-center">
-                        <p>Not a member? <a href="./register">Register</a></p>
-
-                        <%- include('partials/sociallogin'); %>
-                      </div>
-                  </form>
+  <div class="container h-100" style="padding-top: 20vh;">
+    <div class="col-lg-12 col-xl-11">
+      <div class="card text-black" style="border-radius: 25px;">
+        <div class="card-body p-md-5">
+          <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+              <form id="login_form" action="" method="POST">
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <input id="login_email" type="email" name="email" class="form-control" required />
+                  <label class="form-label" for="login_email">Email address</label>
                 </div>
-              </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <input id="login_password" name="password" type="password" class="form-control" required />
+                  <label class="form-label" for="login_password">Password</label>
+                </div>
+
+                <!-- 2 column grid layout for inline styling -->
+                <div class="row mb-4">
+                  <div class="col">
+                    <!-- Simple link -->
+                    <a href="./resetpassword">reset password</a>
+                  </div>
+
+                  <!-- Submit button -->
+                  <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+                  <!-- Register buttons -->
+                  <div class="text-center">
+                    <p>Not a member? <a href="./register">Register</a></p>
+
+                    <%- include('partials/sociallogin'); %>
+                  </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <script>
     $(function() {
@@ -59,7 +53,7 @@
 
     $("#login_form").on("submit", function(e) {
       e.preventDefault();
-      
+
       const password = $("#login_password");
 
       if (!checkPasswordvalidity(password))
@@ -75,17 +69,17 @@
         },
       }).done(function(data) {
         localStorage.setItem("email", $("#login_email").val());
-        
-        if(data.succeed)
+
+        if (data.succeed)
           window.location.href = "./";
-        else{
-          showMessage(data.message);    
-          if(data.resendEmail)
-            $("#messageModal_btn_resendemail").show();   
-        }   
+        else {
+          showMessage(data.message);
+          if (data.resendEmail)
+            $("#messageModal_btn_resendemail").show();
+        }
       });
 
-      
+
       return false;
     });
   </script>

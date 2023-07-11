@@ -343,6 +343,9 @@ export class UserService {
             oldPassword = crypto.createHash('md5').update(oldPassword).digest("hex");
             newPassword = crypto.createHash('md5').update(newPassword).digest("hex");
 
+            if(oldPassword === newPassword)
+                return this.getAPIResult(true, "succeed! please use new password to login");
+
             let user = await User.findOne({
                 where: {
                     registration_type: "email",
