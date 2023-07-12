@@ -1,4 +1,4 @@
-# AhaExam, There are Javascript and Typescript version.
+# AhaExam, There are Javascript and Typescript version. Please check Typescript first for latest update.
 
 # WebSite link : https://jd-feve.vip/AhaExam/
 # Api document : https://jd-feve.vip/AhaExam/doc/

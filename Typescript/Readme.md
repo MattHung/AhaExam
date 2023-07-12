@@ -1,12 +1,12 @@
 # Build & installation
-#### build project
+## build project
 npm i
 npm run build
-#### build Swagger documentation
+## build Swagger documentation
 npm run start-gendoc
 
-#### run project
+## run project
 npm run start
 
-#### access project at: http://localhost:5002/AhaExam/
-#### access project documentation at: http://localhost:5002/AhaExam/doc
+## access project at: http://localhost:5002/AhaExam/
+## access project documentation at: http://localhost:5002/AhaExam/doc
