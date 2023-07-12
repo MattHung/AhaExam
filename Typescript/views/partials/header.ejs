@@ -8,6 +8,9 @@
 
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css">
+  <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+
   <!-- Navigation: Start -->
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="color: white;">
     <div class="container row">
@@ -35,7 +38,7 @@
             <%= user.name %>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" id = "dropdown_email"><%= user.email %></a>
+            <a class="dropdown-item" id="dropdown_email"><%= user.email %></a>
             <a class="dropdown-item" href="./changeusername">Change User Name</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="javascript:;" id="btn_logout">Logout</a>
@@ -50,17 +53,17 @@
   <%- include('../modal/messagemodal'); %>
 
   <script>
-    function handleLogout(){
+    function handleLogout() {
       $.ajax({
         type: "GET",
         dataType: "json",
-        url: "./logout",       
+        url: "./logout",
       }).done(function(data) {
-        if(data.succeed)
+        if (data.succeed)
           window.location.href = "./";
-        else{
-          showMessage(data.message); 
-        }   
+        else {
+          showMessage(data.message);
+        }
       });
     }
 
@@ -69,7 +72,7 @@
       $("#messageModal").modal('show');
 
       $("#messageModal_btn_close").on("click", function() {
-        $("#messageModal_btn_resendemail").hide();   
+        $("#messageModal_btn_resendemail").hide();
         $("#messageModal").modal('hide');
       });
     }
@@ -131,15 +134,15 @@
     }
 
     $(function() {
-      let email =  $("#dropdown_email").text();     
-      if(email)
+      let email = $("#dropdown_email").text();
+      if (email)
         localStorage.setItem("email", email);
 
       let error_message = "<%= error_message %>";
       if (error_message)
         showMessage(error_message);
 
-      $("#btn_logout").on("click", ()=>{
+      $("#btn_logout").on("click", () => {
         handleLogout();
       });
     });

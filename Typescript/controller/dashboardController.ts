@@ -32,7 +32,12 @@ export class DashboardController {
             offset: offset,
         });
 
-        res.json(queryRes);
+        let total: number = await User.count({});
+        res.json({
+            total:total,
+            totalNotFiltered:total,
+            rows:queryRes,
+        });
     }
 
     userStatistics = async(req, res) : Promise<void> => {
